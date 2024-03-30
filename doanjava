@@ -1,0 +1,263 @@
+package doan;
+
+import java.io.*;
+import java.util.*;
+
+// Class định nghĩa Cầu Thủ
+class CauThu implements Serializable {
+    private String hoTen;
+    private int tuoi;
+    private String gioiTinh;
+    private String viTri;
+
+    public CauThu(String hoTen, int tuoi, String gioiTinh, String viTri) {
+        this.hoTen = hoTen;
+        this.tuoi = tuoi;
+        this.gioiTinh = gioiTinh;
+        this.viTri = viTri;
+    }
+
+    public String getHoTen() {
+        return hoTen;
+    }
+
+    public int getTuoi() {
+        return tuoi;
+    }
+
+    public String getGioiTinh() {
+        return gioiTinh;
+    }
+
+    public String getViTri() {
+        return viTri;
+    }
+
+    @Override
+    public String toString() {
+        return "Họ tên: " + hoTen + ", Tuổi: " + tuoi + ", Giới tính: " + gioiTinh + ", Vị trí: " + viTri;
+    }
+}
+
+// Class ứng dụng
+public class QuanLyCauThu {
+    private ArrayList<CauThu> danhSachCauThu = new ArrayList<>();
+    private Scanner scanner = new Scanner(System.in);
+
+    public void themNhieuCauThu() {
+        System.out.print("Nhập số lượng cầu thủ cần thêm: ");
+        int soLuong = Integer.parseInt(scanner.nextLine());
+
+        for (int i = 0; i < soLuong; i++) {
+            System.out.println("Nhập thông tin cho cầu thủ thứ " + (i + 1) + ":");
+            System.out.print("Nhập họ tên cầu thủ: ");
+            String hoTen = scanner.nextLine();
+            System.out.print("Nhập tuổi cầu thủ: ");
+            int tuoi = Integer.parseInt(scanner.nextLine());
+            System.out.print("Nhập giới tính cầu thủ: ");
+            String gioiTinh = scanner.nextLine();
+            System.out.print("Nhập vị trí cầu thủ: ");
+            String viTri = scanner.nextLine();
+
+            CauThu ct = new CauThu(hoTen, tuoi, gioiTinh, viTri);
+            danhSachCauThu.add(ct);
+        }
+    }
+
+    public void hienThiDanhSach() {
+        if (danhSachCauThu.isEmpty()) {
+            System.out.println("Danh sách cầu thủ trống.");
+            return;
+        }
+        
+        String headerFormat = "║ %-15s │ %-5s │ %-10s │ %-15s ║\n";
+        String rowFormat = "║ %-15s │ %-5d │ %-10s │ %-15s ║\n";
+        System.out.println("╔══════════════════════════════════════════════════════════════════════╗");
+        System.out.println("║                            DANH SÁCH CẦU THỦ                         ║");
+        System.out.println("╠══════════════════════════════════════════════════════════════════════╣");
+        System.out.printf(headerFormat, "Họ và Tên", "Tuổi", "Giới Tính", "Vị Trí");
+        System.out.println("╠══════════════════════════════════════════════════════════════════════╣");
+        for (CauThu ct : danhSachCauThu) {
+            System.out.printf(rowFormat, ct.getHoTen(), ct.getTuoi(), ct.getGioiTinh(), ct.getViTri());
+        }
+
+        System.out.println("╚══════════════════════════════════════════════════════════════════════╝");
+    }
+
+
+
+
+    public void timKiemCauThu(String hoTen) {
+        boolean found = false;
+        for (CauThu ct : danhSachCauThu) {
+            if (ct.getHoTen().equals(hoTen)) {
+                System.out.println(ct);
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            System.out.println("Không tìm thấy cầu thủ có họ tên là " + hoTen);
+        }
+    }
+
+
+        	public void xoaCauThu(String hoTen) {
+        	    Iterator<CauThu> iterator = danhSachCauThu.iterator();
+        	    while (iterator.hasNext()) {
+        	        CauThu ct = iterator.next();
+        	        if (ct.getHoTen().equalsIgnoreCase(hoTen)) {
+        	            iterator.remove();
+        	            System.out.println("Đã xóa cầu thủ có họ tên là " + hoTen);
+        	            return;
+        	        }
+        	    }
+        	    System.out.println("Không tìm thấy cầu thủ có họ tên là " + hoTen + " để xóa.");
+        	}
+
+        	public void suaThongTinCauThu(String hoTen) {
+        	    for (int i = 0; i < danhSachCauThu.size(); i++) {
+        	        CauThu ct = danhSachCauThu.get(i);
+        	        if (ct.getHoTen().equalsIgnoreCase(hoTen)) {
+        	            System.out.print("Nhập họ tên mới: ");
+        	            String newHoTen = scanner.nextLine();
+        	            System.out.print("Nhập tuổi mới: ");
+        	            int newTuoi = Integer.parseInt(scanner.nextLine());
+        	            System.out.print("Nhập giới tính mới: ");
+        	            String newGioiTinh = scanner.nextLine();
+        	            System.out.print("Nhập vị trí mới: ");
+        	            String newViTri = scanner.nextLine();
+
+        	            // Cập nhật thông tin mới cho cầu thủ tại vị trí i trong danh sách
+        	            danhSachCauThu.set(i, new CauThu(newHoTen, newTuoi, newGioiTinh, newViTri));
+        	            System.out.println("Đã cập nhật thông tin cho cầu thủ có họ tên là " + hoTen);
+        	            return;
+        	        }
+        	    }
+        	    System.out.println("Không tìm thấy cầu thủ có họ tên là " + hoTen + " để sửa.");
+        	}
+
+
+        	public void sapXepTheoTuoi() {
+        	    Collections.sort(danhSachCauThu, (ct1, ct2) -> {
+        	        int tuoi1 = ct1.getTuoi();
+        	        int tuoi2 = ct2.getTuoi();
+        	        return Integer.compare(tuoi1, tuoi2);
+        	    });
+        	    System.out.println("Đã sắp xếp danh sách cầu thủ theo tuổi từ thấp đến cao.");
+        	}
+
+
+        	public void thongKeCauThu() {
+        	    System.out.println("Tổng số cầu thủ: " + danhSachCauThu.size());
+        	}
+
+        	public void docTuFile(String tenFile) {
+        	    try (BufferedReader reader = new BufferedReader(new FileReader(tenFile))) {
+        	        String line;
+        	        while ((line = reader.readLine()) != null) {
+        	            // Tách thông tin của mỗi cầu thủ từ dòng văn bản
+        	            String[] parts = line.split(", ");
+        	            if (parts.length == 4) {
+        	                String hoTen = parts[0].substring(parts[0].indexOf(": ") + 2);
+        	                int tuoi = Integer.parseInt(parts[1].substring(parts[1].indexOf(": ") + 2));
+        	                String gioiTinh = parts[2].substring(parts[2].indexOf(": ") + 2);
+        	                String viTri = parts[3].substring(parts[3].indexOf(": ") + 2);
+        	                CauThu ct = new CauThu(hoTen, tuoi, gioiTinh, viTri);
+        	                danhSachCauThu.add(ct);
+        	            }
+        	        }
+        	        System.out.println("Đã đọc danh sách cầu thủ từ file " + tenFile);
+        	    } catch (IOException e) {
+        	        System.out.println("Lỗi khi đọc từ file: " + e.getMessage());
+        	    }
+        	}
+
+
+        	public void luuFile(String tenFile) {
+        	    try (BufferedWriter writer = new BufferedWriter(new FileWriter(tenFile))) {
+        	        for (CauThu ct : danhSachCauThu) {
+        	            // Ghi thông tin của mỗi cầu thủ vào tệp văn bản, mỗi cầu thủ trên một dòng
+        	            writer.write(ct.toString());
+        	            writer.newLine(); // Thêm dòng mới sau mỗi cầu thủ
+        	        }
+        	        System.out.println("Đã lưu danh sách cầu thủ vào file " + tenFile);
+        	    } catch (IOException e) {
+        	        System.out.println("Lỗi khi lưu vào file: " + e.getMessage());
+        	    }
+        	}
+
+        	public static void main(String[] args) {
+        	    QuanLyCauThu quanLy = new QuanLyCauThu();
+        	    Scanner scanner = new Scanner(System.in);
+        	    int luaChon;
+
+        	    do {
+        	        System.out.println("╔════════════════════════════════╗");
+        	        System.out.println("║           MENU CHƯƠNG TRÌNH    ║");
+        	        System.out.println("╠════════════════════════════════╣");
+        	        System.out.println("║ 1. Thêm cầu thủ                ║");
+        	        System.out.println("║ 2. Hiển thị danh sách cầu thủ  ║");
+        	        System.out.println("║ 3. Tìm kiếm cầu thủ            ║");
+        	        System.out.println("║ 4. Xóa cầu thủ                 ║");
+        	        System.out.println("║ 5. Sửa thông tin cầu thủ       ║");
+        	        System.out.println("║ 6. Sắp xếp theo tuổi           ║");
+        	        System.out.println("║ 7. Thống kê số lượng cầu thủ   ║");
+        	        System.out.println("║ 8. Đọc từ file                 ║");
+        	        System.out.println("║ 9. Lưu vào file                ║");
+        	        System.out.println("║ 0. Thoát chương trình          ║");
+        	        System.out.println("╚════════════════════════════════╝");
+        	        System.out.print("Nhập lựa chọn của bạn: ");
+        	        luaChon = Integer.parseInt(scanner.nextLine());
+        	        
+                    switch (luaChon) {
+                    case 1:
+                        quanLy.themNhieuCauThu();
+                        break;
+                    case 2:
+                        quanLy.hienThiDanhSach();
+                        break;
+                    case 3:
+                        System.out.print("Nhập họ tên cầu thủ cần tìm kiếm: ");
+                        String tenTimKiem = scanner.nextLine();
+                        quanLy.timKiemCauThu(tenTimKiem);
+                        break;
+                    case 4:
+                        System.out.print("Nhập họ tên cầu thủ cần xóa: ");
+                        String tenXoa = scanner.nextLine();
+                        quanLy.xoaCauThu(tenXoa);
+                        break;
+                    case 5:
+                        System.out.print("Nhập họ tên cầu thủ cần sửa: ");
+                        String tenSua = scanner.nextLine();
+                        quanLy.suaThongTinCauThu(tenSua);
+                        break;
+                    case 6:
+                        quanLy.sapXepTheoTuoi();
+                        break;
+                    case 7:
+                        quanLy.thongKeCauThu();
+                        break;
+                    case 8:
+                        System.out.print("Nhập tên file cần đọc: ");
+                        String tenFileDoc = scanner.nextLine();
+                        quanLy.docTuFile(tenFileDoc);
+                        break;
+                    case 9:
+                        System.out.print("Nhập tên file cần lưu: ");
+                        String tenFileLuu = scanner.nextLine();
+                        quanLy.luuFile(tenFileLuu);
+                        break;
+                    case 0:
+                        System.out.println("Đã thoát chương trình.");
+                        break;
+                    default:
+                        System.out.println("Lựa chọn không hợp lệ.");
+                }
+            } while (luaChon != 0);
+        }
+    }
+
+
+        	       
+
